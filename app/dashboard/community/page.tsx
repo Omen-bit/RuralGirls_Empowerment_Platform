@@ -889,7 +889,7 @@ export default function CommunitySupportPage() {
             <div className="flex items-center">
               <Trophy className="h-5 w-5 mr-2" />
               <span className="text-sm font-medium">
-                <Link href="/community/challenges" className="underline hover:text-white/90">
+                <Link href="/dashboard/community/challenges" className="underline hover:text-white/90">
                   Join challenges & earn rewards
                 </Link>
               </span>
@@ -948,7 +948,7 @@ export default function CommunitySupportPage() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/community/challenges">
+                      <Link href="/dashboard/community/challenges">
                         <Award className="h-4 w-4 mr-2" />
                         Challenges & Rewards
                       </Link>
@@ -1150,7 +1150,7 @@ export default function CommunitySupportPage() {
                         className="bg-white text-violet-700 hover:bg-white/90"
                         asChild
                       >
-                        <Link href="/community/challenges">
+                        <Link href="/dashboard/community/challenges">
                           <Target className="mr-2 h-4 w-4" /> View Challenges
                         </Link>
                       </Button>
@@ -1225,7 +1225,7 @@ export default function CommunitySupportPage() {
                       <Card key={index} className="card-hover border-amber-200">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-base hover:text-amber-600 transition-colors">
-                            <Link href="/community/challenges">{challenge.title}</Link>
+                            <Link href="/dashboard/community/challenges">{challenge.title}</Link>
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="pb-2">
@@ -1255,7 +1255,7 @@ export default function CommunitySupportPage() {
                         </CardContent>
                         <CardFooter>
                           <Button asChild className="w-full bg-amber-500 hover:bg-amber-600">
-                            <Link href="/community/challenges">Join Challenge</Link>
+                            <Link href="/dashboard/community/challenges">Join Challenge</Link>
                           </Button>
                         </CardFooter>
                       </Card>
@@ -2661,7 +2661,7 @@ export default function CommunitySupportPage() {
           size="lg"
           className="rounded-full shadow-lg bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white"
         >
-          <Link href="/community/challenges">
+          <Link href="/dashboard/community/challenges">
             <Trophy className="mr-2 h-5 w-5" /> Challenges & Rewards
           </Link>
         </Button>
