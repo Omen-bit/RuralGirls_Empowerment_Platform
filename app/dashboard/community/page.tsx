@@ -14,6 +14,18 @@ import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
   Calendar,
   Clock,
   Heart,
@@ -39,9 +51,13 @@ import {
   Award,
   Trophy,
   Target,
+  Check,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
 export default function CommunitySupportPage() {
   const [activeTab, setActiveTab] = useState("forums")
@@ -56,12 +72,82 @@ export default function CommunitySupportPage() {
   const [onlineUsers, setOnlineUsers] = useState(0)
   const [notifications, setNotifications] = useState<any[]>([])
   const [showNotifications, setShowNotifications] = useState(false)
+  const [mentorApplicationSubmitted, setMentorApplicationSubmitted] = useState(false)
+  const [mentorshipRequestSubmitted, setMentorshipRequestSubmitted] = useState(false)
+  const [selectedMentor, setSelectedMentor] = useState<string | null>(null)
 
   const forumRef = useRef<HTMLDivElement>(null)
   const mentorshipRef = useRef<HTMLDivElement>(null)
   const eventsRef = useRef<HTMLDivElement>(null)
   const helpRef = useRef<HTMLDivElement>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
+
+  // Mentor application form schema
+  const mentorFormSchema = z.object({
+    fullName: z.string().min(2, { message: "Name must be at least 2 characters." }),
+    email: z.string().email({ message: "Please enter a valid email address." }),
+    phone: z.string().min(10, { message: "Please enter a valid phone number." }),
+    location: z.string().min(2, { message: "Please enter your location." }),
+    expertise: z.string().min(2, { message: "Please select your area of expertise." }),
+    experience: z.string().min(1, { message: "Please select your years of experience." }),
+    qualifications: z.string().min(10, { message: "Please provide your qualifications." }),
+    specialties: z.string().optional(),
+    motivation: z.string().min(50, { message: "Please tell us why you want to be a mentor (min 50 characters)." }),
+    availability: z.array(z.string()).min(1, { message: "Please select at least one availability option." }),
+    agreeToTerms: z.boolean().refine((val) => val === true, { message: "You must agree to the terms and conditions." }),
+  })
+
+  // Mentorship request form schema
+  const mentorshipRequestSchema = z.object({
+    goals: z.string().min(20, { message: "Please describe your goals (min 20 characters)." }),
+    interests: z.string().min(10, { message: "Please describe your interests (min 10 characters)." }),
+    commitment: z.string().min(1, { message: "Please select your time commitment." }),
+    preferredCommunication: z.array(z.string()).min(1, { message: "Please select at least one communication method." }),
+    additionalInfo: z.string().optional(),
+  })
+
+  // Initialize forms
+  const mentorForm = useForm<z.infer<typeof mentorFormSchema>>({
+    resolver: zodResolver(mentorFormSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      location: "",
+      expertise: "",
+      experience: "",
+      qualifications: "",
+      specialties: "",
+      motivation: "",
+      availability: [],
+      agreeToTerms: false,
+    },
+  })
+
+  const mentorshipRequestForm = useForm<z.infer<typeof mentorshipRequestSchema>>({
+    resolver: zodResolver(mentorshipRequestSchema),
+    defaultValues: {
+      goals: "",
+      interests: "",
+      commitment: "",
+      preferredCommunication: [],
+      additionalInfo: "",
+    },
+  })
+
+  // Handle mentor application submission
+  function onMentorSubmit(data: z.infer<typeof mentorFormSchema>) {
+    console.log("Mentor application submitted:", data)
+    setMentorApplicationSubmitted(true)
+    // In a real app, you would send this data to your backend
+  }
+
+  // Handle mentorship request submission
+  function onMentorshipRequestSubmit(data: z.infer<typeof mentorshipRequestSchema>) {
+    console.log("Mentorship request submitted:", data)
+    setMentorshipRequestSubmitted(true)
+    // In a real app, you would send this data to your backend
+  }
 
   // Simulate online users count
   useEffect(() => {
@@ -353,6 +439,7 @@ export default function CommunitySupportPage() {
 
   const mentors = [
     {
+      id: 1,
       name: "Sunita Sharma",
       expertise: "Small Business Development",
       location: "Rajasthan",
@@ -366,6 +453,7 @@ export default function CommunitySupportPage() {
       featured: true,
     },
     {
+      id: 2,
       name: "Dr. Priya Patel",
       expertise: "Women's Health Education",
       location: "Gujarat",
@@ -378,6 +466,7 @@ export default function CommunitySupportPage() {
       specialties: ["Reproductive Health", "Nutrition", "Mental Health", "Community Health"],
     },
     {
+      id: 3,
       name: "Meena Reddy",
       expertise: "Digital Skills & Technology",
       location: "Telangana",
@@ -391,6 +480,7 @@ export default function CommunitySupportPage() {
       featured: true,
     },
     {
+      id: 4,
       name: "Anjali Singh",
       expertise: "Education & Scholarships",
       location: "Bihar",
@@ -403,6 +493,7 @@ export default function CommunitySupportPage() {
       specialties: ["Scholarship Applications", "Career Guidance", "Study Skills", "Higher Education"],
     },
     {
+      id: 5,
       name: "Fatima Khan",
       expertise: "Textile & Handicraft Skills",
       location: "Uttar Pradesh",
@@ -415,6 +506,7 @@ export default function CommunitySupportPage() {
       specialties: ["Traditional Textiles", "Embroidery", "Product Design", "Quality Control"],
     },
     {
+      id: 6,
       name: "Lakshmi Nair",
       expertise: "Agricultural Entrepreneurship",
       location: "Kerala",
@@ -539,6 +631,24 @@ export default function CommunitySupportPage() {
       },
     },
   }
+
+  // Availability options for mentor application
+  const availabilityOptions = [
+    { id: "weekdays", label: "Weekdays" },
+    { id: "weekends", label: "Weekends" },
+    { id: "mornings", label: "Mornings" },
+    { id: "afternoons", label: "Afternoons" },
+    { id: "evenings", label: "Evenings" },
+  ]
+
+  // Communication method options for mentorship request
+  const communicationOptions = [
+    { id: "video", label: "Video Call" },
+    { id: "audio", label: "Audio Call" },
+    { id: "chat", label: "Text Chat" },
+    { id: "email", label: "Email" },
+    { id: "in-person", label: "In-Person (if possible)" },
+  ]
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -674,6 +784,22 @@ export default function CommunitySupportPage() {
                   </span>
                 </Button>
               </motion.div>
+              {/* Prominent Challenges & Rewards Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.7 }}
+              >
+                <Button
+                  asChild
+                  size="lg"
+                  className="mt-4 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white shadow-lg shadow-amber-200 dark:shadow-none"
+                >
+                  <Link href="/dashboard/community/challenges">
+                    <Trophy className="mr-2 h-5 w-5" /> Challenges & Rewards
+                  </Link>
+                </Button>
+              </motion.div>
             </div>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -682,7 +808,7 @@ export default function CommunitySupportPage() {
               className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="\c.png"
                 alt="Rural women in a community meeting"
                 fill
                 className="object-cover"
@@ -763,7 +889,7 @@ export default function CommunitySupportPage() {
             <div className="flex items-center">
               <Trophy className="h-5 w-5 mr-2" />
               <span className="text-sm font-medium">
-                <Link href="/dashboard/community/challenges" className="underline hover:text-white/90">
+                <Link href="/community/challenges" className="underline hover:text-white/90">
                   Join challenges & earn rewards
                 </Link>
               </span>
@@ -822,7 +948,7 @@ export default function CommunitySupportPage() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/dashboard/community/challenges">
+                      <Link href="/community/challenges">
                         <Award className="h-4 w-4 mr-2" />
                         Challenges & Rewards
                       </Link>
@@ -833,18 +959,6 @@ export default function CommunitySupportPage() {
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Quick Actions:</span>
-              <Button variant="outline" size="sm">
-                <Zap className="h-4 w-4 mr-2" />
-                New Discussion
-              </Button>
-              <Button variant="outline" size="sm">
-                <Calendar className="h-4 w-4 mr-2" />
-                Create Event
-              </Button>
             </div>
           </div>
 
@@ -1036,7 +1150,7 @@ export default function CommunitySupportPage() {
                         className="bg-white text-violet-700 hover:bg-white/90"
                         asChild
                       >
-                        <Link href="/dashboard/community/challenges">
+                        <Link href="/community/challenges">
                           <Target className="mr-2 h-4 w-4" /> View Challenges
                         </Link>
                       </Button>
@@ -1074,6 +1188,78 @@ export default function CommunitySupportPage() {
                           </CardFooter>
                         </Card>
                       ))}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium mb-3 flex items-center">
+                    <Trophy className="mr-2 h-5 w-5 text-amber-500" /> Featured Challenges
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[
+                      {
+                        title: "Digital Skills Champion",
+                        description:
+                          "Complete 5 courses in the Digital Skills section and help 3 other members with their questions.",
+                        reward: "Digital Skills Champion Badge + 500 points",
+                        deadline: "May 15, 2025",
+                        participants: 87,
+                      },
+                      {
+                        title: "Community Builder",
+                        description:
+                          "Start 3 discussions that receive at least 10 replies each and participate in 10 other discussions.",
+                        reward: "Community Builder Badge + 300 points",
+                        deadline: "Ongoing",
+                        participants: 124,
+                      },
+                      {
+                        title: "Entrepreneurship Challenge",
+                        description:
+                          "Create a business plan and get feedback from 3 mentors. Present your idea in the next virtual meetup.",
+                        reward: "Entrepreneurship Badge + 400 points + Mentorship session",
+                        deadline: "June 1, 2025",
+                        participants: 56,
+                      },
+                    ].map((challenge, index) => (
+                      <Card key={index} className="card-hover border-amber-200">
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-base hover:text-amber-600 transition-colors">
+                            <Link href="/community/challenges">{challenge.title}</Link>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="pb-2">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                              Challenge
+                            </Badge>
+                            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                              Active
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground line-clamp-3">{challenge.description}</p>
+                          <div className="mt-2 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-amber-600 font-medium">Reward:</span>
+                              <span className="text-muted-foreground">{challenge.reward}</span>
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-amber-600 font-medium">Deadline:</span>
+                              <span className="text-muted-foreground">{challenge.deadline}</span>
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-amber-600 font-medium">Participants:</span>
+                              <span className="text-muted-foreground">{challenge.participants}</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Button asChild className="w-full bg-amber-500 hover:bg-amber-600">
+                            <Link href="/community/challenges">Join Challenge</Link>
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
                   </div>
                 </div>
 
@@ -1324,8 +1510,8 @@ export default function CommunitySupportPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {mentors
                       .filter((mentor) => mentor.featured)
-                      .map((mentor, index) => (
-                        <Card key={index} className="card-hover border-yellow-200 overflow-hidden">
+                      .map((mentor) => (
+                        <Card key={mentor.id} className="card-hover border-yellow-200 overflow-hidden">
                           <div className="absolute top-0 right-0">
                             <Badge className="m-2 bg-yellow-500 text-white border-none">Featured</Badge>
                           </div>
@@ -1365,12 +1551,174 @@ export default function CommunitySupportPage() {
                             <p className="text-muted-foreground text-sm">{mentor.bio}</p>
                           </CardContent>
                           <CardFooter>
-                            <Button
-                              asChild
-                              className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600"
-                            >
-                              <Link href="#">Request Mentorship</Link>
-                            </Button>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600">
+                                  Request Mentorship
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[500px]">
+                                {mentorshipRequestSubmitted ? (
+                                  <div className="text-center py-6">
+                                    <div className="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                                      <Check className="h-6 w-6 text-green-600" />
+                                    </div>
+                                    <DialogTitle className="text-xl mb-2">Mentorship Request Submitted!</DialogTitle>
+                                    <DialogDescription>
+                                      Your request has been sent to {selectedMentor || mentor.name}. They will review
+                                      your request and get back to you soon.
+                                    </DialogDescription>
+                                    <Button className="mt-6" onClick={() => setMentorshipRequestSubmitted(false)}>
+                                      Close
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <DialogHeader>
+                                      <DialogTitle>Request Mentorship from {mentor.name}</DialogTitle>
+                                      <DialogDescription>
+                                        Please provide some information about what you're looking for in this mentorship
+                                        relationship.
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                    <Form {...mentorshipRequestForm}>
+                                      <form
+                                        onSubmit={mentorshipRequestForm.handleSubmit((data) => {
+                                          setSelectedMentor(mentor.name)
+                                          onMentorshipRequestSubmit(data)
+                                        })}
+                                        className="space-y-4"
+                                      >
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="goals"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>What are your goals for this mentorship?</FormLabel>
+                                              <FormControl>
+                                                <Textarea
+                                                  placeholder="I want to learn about..."
+                                                  {...field}
+                                                  className="min-h-[80px]"
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="interests"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>
+                                                What specific topics or skills are you interested in?
+                                              </FormLabel>
+                                              <FormControl>
+                                                <Input placeholder="Digital marketing, handicrafts, etc." {...field} />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="commitment"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>How much time can you commit to this mentorship?</FormLabel>
+                                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                  <SelectTrigger>
+                                                    <SelectValue placeholder="Select your time commitment" />
+                                                  </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                  <SelectItem value="1-hour-weekly">1 hour weekly</SelectItem>
+                                                  <SelectItem value="2-hours-weekly">2 hours weekly</SelectItem>
+                                                  <SelectItem value="1-hour-biweekly">
+                                                    1 hour every two weeks
+                                                  </SelectItem>
+                                                  <SelectItem value="flexible">Flexible schedule</SelectItem>
+                                                </SelectContent>
+                                              </Select>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="preferredCommunication"
+                                          render={() => (
+                                            <FormItem>
+                                              <div className="mb-2">
+                                                <FormLabel>Preferred communication methods</FormLabel>
+                                                <FormDescription>Select all that apply</FormDescription>
+                                              </div>
+                                              <div className="grid grid-cols-2 gap-2">
+                                                {communicationOptions.map((option) => (
+                                                  <FormField
+                                                    key={option.id}
+                                                    control={mentorshipRequestForm.control}
+                                                    name="preferredCommunication"
+                                                    render={({ field }) => {
+                                                      return (
+                                                        <FormItem
+                                                          key={option.id}
+                                                          className="flex flex-row items-start space-x-2 space-y-0"
+                                                        >
+                                                          <FormControl>
+                                                            <Checkbox
+                                                              checked={field.value?.includes(option.id)}
+                                                              onCheckedChange={(checked) => {
+                                                                return checked
+                                                                  ? field.onChange([...field.value, option.id])
+                                                                  : field.onChange(
+                                                                      field.value?.filter(
+                                                                        (value) => value !== option.id,
+                                                                      ),
+                                                                    )
+                                                              }}
+                                                            />
+                                                          </FormControl>
+                                                          <FormLabel className="text-sm font-normal">
+                                                            {option.label}
+                                                          </FormLabel>
+                                                        </FormItem>
+                                                      )
+                                                    }}
+                                                  />
+                                                ))}
+                                              </div>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="additionalInfo"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>Additional information (optional)</FormLabel>
+                                              <FormControl>
+                                                <Textarea
+                                                  placeholder="Anything else you'd like your mentor to know..."
+                                                  {...field}
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <DialogFooter className="mt-6">
+                                          <Button type="submit">Submit Request</Button>
+                                        </DialogFooter>
+                                      </form>
+                                    </Form>
+                                  </>
+                                )}
+                              </DialogContent>
+                            </Dialog>
                           </CardFooter>
                         </Card>
                       ))}
@@ -1412,8 +1760,8 @@ export default function CommunitySupportPage() {
                 >
                   {mentors
                     .filter((mentor) => !mentor.featured)
-                    .map((mentor, index) => (
-                      <motion.div key={index} variants={itemVariants}>
+                    .map((mentor) => (
+                      <motion.div key={mentor.id} variants={itemVariants}>
                         <Card className="h-full card-hover">
                           <CardHeader>
                             <div className="flex items-center gap-4">
@@ -1476,12 +1824,174 @@ export default function CommunitySupportPage() {
                             </div>
                           </CardContent>
                           <CardFooter>
-                            <Button
-                              asChild
-                              className="w-full bg-gradient-to-r from-violet-600 to-purple-500 hover:from-violet-700 hover:to-purple-600"
-                            >
-                              <Link href="#">Request Mentorship</Link>
-                            </Button>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button className="w-full bg-gradient-to-r from-violet-600 to-purple-500 hover:from-violet-700 hover:to-purple-600">
+                                  Request Mentorship
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[500px]">
+                                {mentorshipRequestSubmitted ? (
+                                  <div className="text-center py-6">
+                                    <div className="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                                      <Check className="h-6 w-6 text-green-600" />
+                                    </div>
+                                    <DialogTitle className="text-xl mb-2">Mentorship Request Submitted!</DialogTitle>
+                                    <DialogDescription>
+                                      Your request has been sent to {selectedMentor || mentor.name}. They will review
+                                      your request and get back to you soon.
+                                    </DialogDescription>
+                                    <Button className="mt-6" onClick={() => setMentorshipRequestSubmitted(false)}>
+                                      Close
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <DialogHeader>
+                                      <DialogTitle>Request Mentorship from {mentor.name}</DialogTitle>
+                                      <DialogDescription>
+                                        Please provide some information about what you're looking for in this mentorship
+                                        relationship.
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                    <Form {...mentorshipRequestForm}>
+                                      <form
+                                        onSubmit={mentorshipRequestForm.handleSubmit((data) => {
+                                          setSelectedMentor(mentor.name)
+                                          onMentorshipRequestSubmit(data)
+                                        })}
+                                        className="space-y-4"
+                                      >
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="goals"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>What are your goals for this mentorship?</FormLabel>
+                                              <FormControl>
+                                                <Textarea
+                                                  placeholder="I want to learn about..."
+                                                  {...field}
+                                                  className="min-h-[80px]"
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="interests"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>
+                                                What specific topics or skills are you interested in?
+                                              </FormLabel>
+                                              <FormControl>
+                                                <Input placeholder="Digital marketing, handicrafts, etc." {...field} />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="commitment"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>How much time can you commit to this mentorship?</FormLabel>
+                                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                  <SelectTrigger>
+                                                    <SelectValue placeholder="Select your time commitment" />
+                                                  </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                  <SelectItem value="1-hour-weekly">1 hour weekly</SelectItem>
+                                                  <SelectItem value="2-hours-weekly">2 hours weekly</SelectItem>
+                                                  <SelectItem value="1-hour-biweekly">
+                                                    1 hour every two weeks
+                                                  </SelectItem>
+                                                  <SelectItem value="flexible">Flexible schedule</SelectItem>
+                                                </SelectContent>
+                                              </Select>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="preferredCommunication"
+                                          render={() => (
+                                            <FormItem>
+                                              <div className="mb-2">
+                                                <FormLabel>Preferred communication methods</FormLabel>
+                                                <FormDescription>Select all that apply</FormDescription>
+                                              </div>
+                                              <div className="grid grid-cols-2 gap-2">
+                                                {communicationOptions.map((option) => (
+                                                  <FormField
+                                                    key={option.id}
+                                                    control={mentorshipRequestForm.control}
+                                                    name="preferredCommunication"
+                                                    render={({ field }) => {
+                                                      return (
+                                                        <FormItem
+                                                          key={option.id}
+                                                          className="flex flex-row items-start space-x-2 space-y-0"
+                                                        >
+                                                          <FormControl>
+                                                            <Checkbox
+                                                              checked={field.value?.includes(option.id)}
+                                                              onCheckedChange={(checked) => {
+                                                                return checked
+                                                                  ? field.onChange([...field.value, option.id])
+                                                                  : field.onChange(
+                                                                      field.value?.filter(
+                                                                        (value) => value !== option.id,
+                                                                      ),
+                                                                    )
+                                                              }}
+                                                            />
+                                                          </FormControl>
+                                                          <FormLabel className="text-sm font-normal">
+                                                            {option.label}
+                                                          </FormLabel>
+                                                        </FormItem>
+                                                      )
+                                                    }}
+                                                  />
+                                                ))}
+                                              </div>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <FormField
+                                          control={mentorshipRequestForm.control}
+                                          name="additionalInfo"
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>Additional information (optional)</FormLabel>
+                                              <FormControl>
+                                                <Textarea
+                                                  placeholder="Anything else you'd like your mentor to know..."
+                                                  {...field}
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <DialogFooter className="mt-6">
+                                          <Button type="submit">Submit Request</Button>
+                                        </DialogFooter>
+                                      </form>
+                                    </Form>
+                                  </>
+                                )}
+                              </DialogContent>
+                            </Dialog>
                           </CardFooter>
                         </Card>
                       </motion.div>
@@ -1532,12 +2042,277 @@ export default function CommunitySupportPage() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button
-                      asChild
-                      className="bg-gradient-to-r from-violet-600 to-purple-500 hover:from-violet-700 hover:to-purple-600"
-                    >
-                      <Link href="#">Apply to Become a Mentor</Link>
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="bg-gradient-to-r from-violet-600 to-purple-500 hover:from-violet-700 hover:to-purple-600">
+                          Apply to Become a Mentor
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[600px]">
+                        {mentorApplicationSubmitted ? (
+                          <div className="text-center py-6">
+                            <div className="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                              <Check className="h-6 w-6 text-green-600" />
+                            </div>
+                            <DialogTitle className="text-xl mb-2">Application Submitted!</DialogTitle>
+                            <DialogDescription>
+                              Thank you for applying to become a mentor. Our team will review your application and get
+                              back to you within 5-7 business days.
+                            </DialogDescription>
+                            <Button className="mt-6" onClick={() => setMentorApplicationSubmitted(false)}>
+                              Close
+                            </Button>
+                          </div>
+                        ) : (
+                          <>
+                            <DialogHeader>
+                              <DialogTitle>Mentor Application</DialogTitle>
+                              <DialogDescription>
+                                Please provide information about your qualifications and experience to become a mentor.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <Form {...mentorForm}>
+                              <form onSubmit={mentorForm.handleSubmit(onMentorSubmit)} className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <FormField
+                                    control={mentorForm.control}
+                                    name="fullName"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Full Name</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="Your full name" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  <FormField
+                                    control={mentorForm.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                          <Input type="email" placeholder="Your email address" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  <FormField
+                                    control={mentorForm.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Phone Number</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="Your phone number" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  <FormField
+                                    control={mentorForm.control}
+                                    name="location"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Location</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="City, State" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                </div>
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="expertise"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Area of Expertise</FormLabel>
+                                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                          <SelectTrigger>
+                                            <SelectValue placeholder="Select your primary area of expertise" />
+                                          </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                          <SelectItem value="business">Business & Entrepreneurship</SelectItem>
+                                          <SelectItem value="technology">Technology & Digital Skills</SelectItem>
+                                          <SelectItem value="education">Education & Academics</SelectItem>
+                                          <SelectItem value="health">Health & Wellness</SelectItem>
+                                          <SelectItem value="crafts">Traditional Crafts & Skills</SelectItem>
+                                          <SelectItem value="agriculture">Agriculture & Farming</SelectItem>
+                                          <SelectItem value="other">Other (specify in qualifications)</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="experience"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Years of Experience</FormLabel>
+                                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                          <SelectTrigger>
+                                            <SelectValue placeholder="Select your years of experience" />
+                                          </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                          <SelectItem value="1-3">1-3 years</SelectItem>
+                                          <SelectItem value="4-6">4-6 years</SelectItem>
+                                          <SelectItem value="7-10">7-10 years</SelectItem>
+                                          <SelectItem value="10+">10+ years</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="qualifications"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Qualifications & Credentials</FormLabel>
+                                      <FormControl>
+                                        <Textarea
+                                          placeholder="Please list your relevant qualifications, certifications, and credentials..."
+                                          {...field}
+                                          className="min-h-[100px]"
+                                        />
+                                      </FormControl>
+                                      <FormDescription>
+                                        Include education, certifications, and relevant work experience
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="specialties"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Specialties</FormLabel>
+                                      <FormControl>
+                                        <Textarea
+                                          placeholder="List specific skills or topics you can mentor in (e.g., Digital Marketing, Traditional Embroidery, Financial Planning)"
+                                          {...field}
+                                          className="min-h-[80px]"
+                                        />
+                                      </FormControl>
+                                      <FormDescription>
+                                        Be specific about the skills and knowledge areas you can help with
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="motivation"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Why do you want to be a mentor?</FormLabel>
+                                      <FormControl>
+                                        <Textarea
+                                          placeholder="Share your motivation for becoming a mentor..."
+                                          {...field}
+                                          className="min-h-[100px]"
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="availability"
+                                  render={() => (
+                                    <FormItem>
+                                      <div className="mb-2">
+                                        <FormLabel>Availability</FormLabel>
+                                        <FormDescription>Select all that apply</FormDescription>
+                                      </div>
+                                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                        {availabilityOptions.map((option) => (
+                                          <FormField
+                                            key={option.id}
+                                            control={mentorForm.control}
+                                            name="availability"
+                                            render={({ field }) => {
+                                              return (
+                                                <FormItem
+                                                  key={option.id}
+                                                  className="flex flex-row items-start space-x-2 space-y-0"
+                                                >
+                                                  <FormControl>
+                                                    <Checkbox
+                                                      checked={field.value?.includes(option.id)}
+                                                      onCheckedChange={(checked) => {
+                                                        return checked
+                                                          ? field.onChange([...field.value, option.id])
+                                                          : field.onChange(
+                                                              field.value?.filter((value) => value !== option.id),
+                                                            )
+                                                      }}
+                                                    />
+                                                  </FormControl>
+                                                  <FormLabel className="text-sm font-normal">{option.label}</FormLabel>
+                                                </FormItem>
+                                              )
+                                            }}
+                                          />
+                                        ))}
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={mentorForm.control}
+                                  name="agreeToTerms"
+                                  render={({ field }) => (
+                                    <FormItem className="flex flex-row items-start space-x-2 space-y-0 rounded-md border p-4">
+                                      <FormControl>
+                                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                      </FormControl>
+                                      <div className="space-y-1 leading-none">
+                                        <FormLabel>I agree to the mentor guidelines and code of conduct</FormLabel>
+                                        <FormDescription>
+                                          By checking this box, you agree to maintain confidentiality, provide
+                                          constructive feedback, and uphold the values of our community.
+                                        </FormDescription>
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <DialogFooter className="mt-6">
+                                  <Button type="submit">Submit Application</Button>
+                                </DialogFooter>
+                              </form>
+                            </Form>
+                          </>
+                        )}
+                      </DialogContent>
+                    </Dialog>
                   </CardFooter>
                 </Card>
               </div>
@@ -1775,15 +2550,6 @@ export default function CommunitySupportPage() {
                       </CardFooter>
                     </Card>
                   </div>
-
-                  <div className="flex justify-center mt-8">
-                    <Button
-                      asChild
-                      className="bg-gradient-to-r from-violet-600 to-purple-500 hover:from-violet-700 hover:to-purple-600"
-                    >
-                      <Link href="#">Submit Your Event</Link>
-                    </Button>
-                  </div>
                 </motion.div>
               </div>
             </TabsContent>
@@ -1889,6 +2655,17 @@ export default function CommunitySupportPage() {
           </Tabs>
         </div>
       </section>
+      <div className="fixed bottom-6 right-6 z-50 md:hidden">
+        <Button
+          asChild
+          size="lg"
+          className="rounded-full shadow-lg bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white"
+        >
+          <Link href="/community/challenges">
+            <Trophy className="mr-2 h-5 w-5" /> Challenges & Rewards
+          </Link>
+        </Button>
+      </div>
       <section className="w-full py-12 md:py-24 bg-gradient-to-b from-violet-50 to-white dark:from-gray-900 dark:to-background">
         <div className="container px-4 md:px-6">
           <div className="text-center mb-10">
@@ -1937,7 +2714,7 @@ export default function CommunitySupportPage() {
               >
                 <Link href="/register">Register Now</Link>
               </Button>
-              <Button size="lg" variant="secondary" className="bg-white text-violet-600 hover:bg-gray-100 hover:text-violet-700">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
                 <Link href="#forums">Explore Community</Link>
               </Button>
             </div>
