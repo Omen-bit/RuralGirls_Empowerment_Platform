@@ -74,7 +74,7 @@ export default function SkillMarketplace() {
       duration: "8 weeks",
       rating: 4.8,
       reviews: 245,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/tailoring.jpg",
       category: "Tailoring",
     },
     {
@@ -85,7 +85,7 @@ export default function SkillMarketplace() {
       duration: "6 weeks",
       rating: 4.7,
       reviews: 189,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/advanced embroydery.jpg",
       category: "Handicrafts",
     },
 
@@ -98,7 +98,7 @@ export default function SkillMarketplace() {
       duration: "10 weeks",
       rating: 4.6,
       reviews: 156,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/web development.jpg",
       category: "Digital Skills",
     },
     {
@@ -109,18 +109,18 @@ export default function SkillMarketplace() {
       duration: "6 weeks",
       rating: 4.7,
       reviews: 178,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/digital marketing.jpg",
       category: "Digital Skills",
     },
     {
       title: "Smartphone Photography",
-      description: "Take professional-quality photos using just your smartphone.",
+      description: "Take professional-quality photos using just ysour smartphone.",
       icon: <Smartphone className="h-8 w-8 text-primary" />,
       level: "Beginner",
       duration: "4 weeks",
       rating: 4.8,
       reviews: 132,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/smartphone photography.jpg",
       category: "Digital Skills",
     },
 
@@ -133,7 +133,7 @@ export default function SkillMarketplace() {
       duration: "8 weeks",
       rating: 4.9,
       reviews: 210,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/organic farming.jpg",
       category: "Agriculture",
     },
     {
@@ -144,7 +144,7 @@ export default function SkillMarketplace() {
       duration: "4 weeks",
       rating: 4.8,
       reviews: 175,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/water conservation.jpg",
       category: "Agriculture",
     },
 
@@ -157,7 +157,7 @@ export default function SkillMarketplace() {
       duration: "6 weeks",
       rating: 4.7,
       reviews: 178,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/beauty and wellness.jpg",
       category: "Beauty & Wellness",
     },
 
@@ -170,7 +170,7 @@ export default function SkillMarketplace() {
       duration: "5 weeks",
       rating: 4.8,
       reviews: 132,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/food processing.jpg",
       category: "Food Processing",
     },
 
@@ -183,7 +183,7 @@ export default function SkillMarketplace() {
       duration: "8 weeks",
       rating: 4.9,
       reviews: 220,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/entreprenuership.jpg",
       category: "Business",
     },
     {
@@ -194,7 +194,7 @@ export default function SkillMarketplace() {
       duration: "4 weeks",
       rating: 4.8,
       reviews: 195,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/finance literacy.jpg",
       category: "Business",
     },
     {
@@ -205,7 +205,7 @@ export default function SkillMarketplace() {
       duration: "3 weeks",
       rating: 4.7,
       reviews: 165,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/digital payment.jpg",
       category: "Business",
     },
 
@@ -218,7 +218,7 @@ export default function SkillMarketplace() {
       duration: "4 weeks",
       rating: 4.9,
       reviews: 230,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/hygiene essentials.jpg",
       category: "Health",
     },
     {
@@ -229,7 +229,7 @@ export default function SkillMarketplace() {
       duration: "6 weeks",
       rating: 4.8,
       reviews: 210,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/women health.jpg",
       category: "Health",
     },
 
@@ -242,7 +242,7 @@ export default function SkillMarketplace() {
       duration: "12 weeks",
       rating: 4.7,
       reviews: 185,
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/english.jpg",
       category: "Language",
     },
   ]
@@ -404,7 +404,7 @@ export default function SkillMarketplace() {
       challenge: "Limited access to markets beyond local village fairs",
       solution: "Created an online presence and partnered with urban retailers",
       results: "Annual revenue of ₹15 lakhs, supporting 25 families",
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/art collective.jpg",
     },
     {
       title: "Organic Spice Enterprise",
@@ -416,7 +416,7 @@ export default function SkillMarketplace() {
       challenge: "Competition from large commercial spice companies",
       solution: "Emphasized organic certification and traditional processing methods",
       results: "Exports to 5 countries, annual growth of 40%",
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/spices.jpg",
     },
     {
       title: "Rural Digital Services",
@@ -428,7 +428,7 @@ export default function SkillMarketplace() {
       challenge: "Low digital literacy in the community",
       solution: "Offered free basic training to build trust and demonstrate value",
       results: "Serves 5 villages, monthly income of ₹25,000",
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/digital sevice.jpg",
     },
     {
       title: "Sustainable Dairy Cooperative",
@@ -440,7 +440,7 @@ export default function SkillMarketplace() {
       challenge: "Lack of cold storage and transportation",
       solution: "Invested in solar-powered refrigeration and local delivery network",
       results: "50 member families, monthly turnover of ₹8 lakhs",
-      image: "/placeholder.svg?height=150&width=300",
+      image: "/dairy cooperative.jpg",
     },
   ]
 
@@ -953,7 +953,7 @@ export default function SkillMarketplace() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                           {caseStudies.map((study, index) => (
                             <Card key={index}>
-                              <div className="relative h-[150px] w-full">
+                              <div className="relative h-[200px] w-full">
                                 <Image
                                   src={study.image || "/placeholder.svg"}
                                   alt={study.title}
@@ -1412,22 +1412,15 @@ export default function SkillMarketplace() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button asChild>
-                  <Link href="#">View Full Dashboard</Link>
-                </Button>
-              </CardFooter>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Your Achievements</CardTitle>
-                <CardDescription>Certifications and badges you've earned</CardDescription>
-              </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-medium mb-2">Certifications</h3>
+                    <br />
+                  <CardTitle>certifications</CardTitle>
+                    <br />
                     <div className="grid grid-cols-2 gap-4">
                       {[
                         {
@@ -1477,11 +1470,6 @@ export default function SkillMarketplace() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button asChild>
-                  <Link href="#">View All Achievements</Link>
-                </Button>
-              </CardFooter>
             </Card>
           </div>
         </div>
