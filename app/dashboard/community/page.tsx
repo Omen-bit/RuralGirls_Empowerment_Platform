@@ -2661,7 +2661,7 @@ export default function CommunitySupportPage() {
           size="lg"
           className="rounded-full shadow-lg bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white"
         >
-          <Link href="/community/challenges">
+          <Link href="/dashboard/community/challenges">
             <Trophy className="mr-2 h-5 w-5" /> Challenges & Rewards
           </Link>
         </Button>

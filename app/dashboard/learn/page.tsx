@@ -44,6 +44,7 @@ import {
   PiggyBank,
   HandshakeIcon,
 } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function SkillMarketplace() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -619,7 +620,12 @@ export default function SkillMarketplace() {
       <section className="w-full py-12 md:py-24 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-background">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-            <div className="space-y-4">
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <Badge variant="outline" className="px-3 py-1">
                 Skill Marketplace
               </Badge>
@@ -638,15 +644,20 @@ export default function SkillMarketplace() {
                   <Link href="#entrepreneurship">Explore Entrepreneurship</Link>
                 </Button>
               </div>
-            </div>
-            <div className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden">
+            </motion.div>
+            <motion.div 
+              className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <Image
                 src="/placeholder.svg?height=400&width=600"
                 alt="Women learning vocational skills"
                 fill
                 className="object-cover"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -664,7 +675,12 @@ export default function SkillMarketplace() {
 
             {/* Courses */}
             <TabsContent value="courses" id="courses">
-              <div className="space-y-8">
+              <motion.div
+                className="space-y-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold tracking-tight">Vocational Training Courses</h2>
                   <p className="text-muted-foreground">
@@ -747,12 +763,17 @@ export default function SkillMarketplace() {
                     <Link href="#">View All Courses</Link>
                   </Button>
                 </div>
-              </div>
+              </motion.div>
             </TabsContent>
 
             {/* Certifications */}
             <TabsContent value="certifications">
-              <div className="space-y-8">
+              <motion.div
+                className="space-y-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold tracking-tight">Micro-Certifications</h2>
                   <p className="text-muted-foreground">
@@ -786,12 +807,17 @@ export default function SkillMarketplace() {
                     </Card>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </TabsContent>
 
             {/* Workshops */}
             <TabsContent value="workshops">
-              <div className="space-y-8">
+              <motion.div
+                className="space-y-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold tracking-tight">Workshops & Live Sessions</h2>
                   <p className="text-muted-foreground">
@@ -878,12 +904,17 @@ export default function SkillMarketplace() {
                     </CardContent>
                   </Card>
                 </div>
-              </div>
+              </motion.div>
             </TabsContent>
 
             {/* Entrepreneurship Hub */}
             <TabsContent value="entrepreneurship" id="entrepreneurship">
-              <div className="space-y-8">
+              <motion.div
+                className="space-y-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold tracking-tight">Entrepreneurship Hub</h2>
                   <p className="text-muted-foreground">
@@ -901,7 +932,12 @@ export default function SkillMarketplace() {
 
                   {/* Business Types */}
                   <TabsContent value="business-types">
-                    <div className="space-y-6">
+                    <motion.div
+                      className="space-y-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {businessTypes.map((business, index) => (
                           <Card key={index} className="h-full">
@@ -991,7 +1027,7 @@ export default function SkillMarketplace() {
                               </CardContent>
                               <CardFooter>
                                 <Button variant="outline" asChild>
-                                  <Link href="#">Read Full Case Study</Link>
+                                  <Link href="https://serialsjournals.com/abstract/90832_7-shweta_aggarwal.pdf">Read Full Case Study</Link>
                                 </Button>
                               </CardFooter>
                             </Card>
@@ -1049,12 +1085,17 @@ export default function SkillMarketplace() {
                           </CardContent>
                         </Card>
                       </div>
-                    </div>
+                    </motion.div>
                   </TabsContent>
 
                   {/* Business Roadmap */}
                   <TabsContent value="roadmap">
-                    <div className="space-y-6">
+                    <motion.div
+                      className="space-y-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
                       <div className="bg-muted/30 p-6 rounded-lg">
                         <h3 className="text-xl font-bold mb-2">Your Business Journey</h3>
                         <p className="text-muted-foreground mb-4">
@@ -1179,12 +1220,17 @@ export default function SkillMarketplace() {
                           <Link href="/entrepreneurship/roadmap">View Detailed Business Roadmap</Link>
                         </Button>
                       </div>
-                    </div>
+                    </motion.div>
                   </TabsContent>
 
                   {/* Funding & Resources */}
                   <TabsContent value="funding">
-                    <div className="space-y-6">
+                    <motion.div
+                      className="space-y-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
                       {fundingOptions.map((category, index) => (
                         <div key={index} className="space-y-4">
                           <div className="flex items-center gap-3">
@@ -1345,10 +1391,10 @@ export default function SkillMarketplace() {
                           </CardContent>
                         </Card>
                       </div>
-                    </div>
+                    </motion.div>
                   </TabsContent>
                 </Tabs>
-              </div>
+              </motion.div>
             </TabsContent>
           </Tabs>
         </div>
