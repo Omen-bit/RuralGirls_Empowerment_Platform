@@ -138,7 +138,7 @@ export default function AIMentorPage() {
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/placeholder.svg?height=1080&width=1920"
+          src="/pri.png"
           alt="Background"
           fill
           className="object-cover opacity-20"
@@ -245,7 +245,7 @@ export default function AIMentorPage() {
                   transition={{ delay: 0.4, duration: 0.5 }}
                 >
                   <Image
-                    src="/placeholder.svg?height=200&width=200"
+                    src="/pri.png"
                     alt="AI Assistant"
                     width={120}
                     height={120}
