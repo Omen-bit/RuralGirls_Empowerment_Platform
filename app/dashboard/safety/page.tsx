@@ -43,6 +43,7 @@ import {
   Sparkles,
   MoreHorizontal,
 } from "lucide-react"
+import { link } from "fs"
 
 // Period Tracker Component
 const PeriodTracker = () => {
@@ -1098,7 +1099,7 @@ export default function HealthHygiene() {
               className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/heal.png"
                 alt="Health education for rural girls"
                 fill
                 className="object-cover"
@@ -1267,50 +1268,69 @@ export default function HealthHygiene() {
                           <CardDescription>Videos and interactive content to learn about menstrual hygiene</CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {[
-                              {
-                                title: "Understanding Your Menstrual Cycle",
-                                description: "An animated explanation of the menstrual cycle and how it works.",
-                                duration: "4:30",
-                                thumbnail: "/placeholder.svg?height=150&width=300",
-                              },
-                              {
-                                title: "How to Use Different Menstrual Products",
-                                description: "A practical guide to using pads, tampons, menstrual cups, and cloth pads.",
-                                duration: "6:15",
-                                thumbnail: "/placeholder.svg?height=150&width=300",
-                              },
-                            ].map((video, index) => (
-                              <motion.div 
-                                key={index} 
-                                className="relative group"
-                                whileHover={{ scale: 1.03 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <div className="relative h-[150px] w-full rounded-lg overflow-hidden">
-                                  <Image
-                                    src={video.thumbnail || "/placeholder.svg"}
-                                    alt={video.title}
-                                    fill
-                                    className="object-cover"
-                                  />
-                                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                                    <motion.div 
-                                      className="h-12 w-12 rounded-full bg-white/90 flex items-center justify-center"
-                                      whileHover={{ scale: 1.1 }}
-                                      whileTap={{ scale: 0.95 }}
-                                    >
-                                      <Play className="h-6 w-6 text-pink-500" />
-                                    </motion.div>
-                                  </div>
-                                </div>
-                                <h3 className="font-medium mt-2">{video.title}</h3>
-                                <p className="text-sm text-muted-foreground">{video.description}</p>
-                                <p className="text-xs text-muted-foreground mt-1">{video.duration}</p>
-                              </motion.div>
-                            ))}
-                          </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {[
+    {
+      title: "Understanding Your Menstrual Cycle",
+      description: "An animated explanation of the menstrual cycle and how it works.",
+      duration: "4:30",
+      thumbnail: "/per.png",
+      link: "https://youtu.be/TlYIpMYIHq4?si=7SrbDFIXdRYH5G_W"
+    },
+    {
+      title: "Safe Exercises During Your Period",
+      description: "A gentle guide to staying active and easing cramps with light workouts and stretches.",
+      duration: "5:20",
+      thumbnail: "/ex.png" ,
+      link: "https://youtu.be/2X78NWuRfJU?si=DgJ6v9F3gUQX3Gbs"
+    }
+    
+  ].map((video, index) => {
+    const card = (
+      <motion.div 
+        className="relative group"
+        whileHover={{ scale: 1.03 }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className="relative h-[150px] w-full rounded-lg overflow-hidden">
+          <Image
+            src={video.thumbnail || "/placeholder.svg"}
+            alt={video.title}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+            <motion.div 
+              className="h-12 w-12 rounded-full bg-white/90 flex items-center justify-center"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Play className="h-6 w-6 text-pink-500" />
+            </motion.div>
+          </div>
+        </div>
+        <h3 className="font-medium mt-2">{video.title}</h3>
+        <p className="text-sm text-muted-foreground">{video.description}</p>
+        <p className="text-xs text-muted-foreground mt-1">{video.duration}</p>
+      </motion.div>
+    );
+
+    return video.link ? (
+      <a
+        key={index}
+        href={video.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+      >
+        {card}
+      </a>
+    ) : (
+      <div key={index}>{card}</div>
+    );
+  })}
+</div>
+
                         </CardContent>
                         <CardFooter>
                           <Button asChild className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600">
@@ -1913,7 +1933,7 @@ export default function HealthHygiene() {
                           <div className="flex items-center gap-4">
                             <div className="relative h-12 w-12 rounded-full overflow-hidden">
                               <Image
-                                src="/placeholder.svg?height=100&width=100"
+                                src="/per1.png"
                                 alt="Health Mentor"
                                 fill
                                 className="object-cover"

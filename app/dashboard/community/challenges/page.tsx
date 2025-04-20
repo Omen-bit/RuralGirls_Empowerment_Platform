@@ -183,7 +183,7 @@ export default function ChallengesPage() {
       name: "Priya Sharma",
       points: 780,
       badges: 12,
-      avatar: "/placeholder.svg?height=50&width=50",
+      avatar: "/priya.jpg",
       location: "Rajasthan",
     },
     {
@@ -191,7 +191,7 @@ export default function ChallengesPage() {
       name: "Meena Patel",
       points: 645,
       badges: 10,
-      avatar: "/placeholder.svg?height=50&width=50",
+      avatar: "/meena.jpg",
       location: "Gujarat",
     },
     {
@@ -199,7 +199,7 @@ export default function ChallengesPage() {
       name: "Lakshmi Reddy",
       points: 590,
       badges: 9,
-      avatar: "/placeholder.svg?height=50&width=50",
+      avatar: "/lakshmi.jpg",
       location: "Andhra Pradesh",
     },
     {
@@ -207,7 +207,7 @@ export default function ChallengesPage() {
       name: "Fatima Khan",
       points: 520,
       badges: 8,
-      avatar: "/placeholder.svg?height=50&width=50",
+      avatar: "/fatima.png",
       location: "Uttar Pradesh",
     },
     {
@@ -356,7 +356,7 @@ export default function ChallengesPage() {
               className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/reward.png"
                 alt="Rural women earning badges and rewards"
                 fill
                 className="object-cover"

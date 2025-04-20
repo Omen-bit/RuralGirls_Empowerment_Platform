@@ -350,7 +350,7 @@ export default function BusinessPage() {
       </div>
 
       {/* Business Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-blue-50 border-blue-200">
           <CardContent className="p-6">
             <div className="flex justify-between items-center">

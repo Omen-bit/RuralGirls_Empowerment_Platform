@@ -652,7 +652,7 @@ export default function SkillMarketplace() {
               transition={{ duration: 0.5 }}
             >
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/skill.png"
                 alt="Women learning vocational skills"
                 fill
                 className="object-cover"
