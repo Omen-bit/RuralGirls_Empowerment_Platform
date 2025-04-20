@@ -5,7 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { FirebaseProvider } from "@/lib/firebase/firebase-provider"
 import { Toaster } from "@/components/ui/toaster"
-
+import Loading from "@/components/ui/Loading"; 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {

@@ -132,7 +132,7 @@ export default function CareerPage() {
         requirements: ["Basic computer skills", "Social media knowledge", "Good communication"],
         postedDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
         applicationDeadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-        logo: "/placeholder.svg?height=50&width=50",
+        logo: "/digi.png",
         url: "#",
       },
       {
@@ -147,7 +147,7 @@ export default function CareerPage() {
         requirements: ["HTML/CSS", "Basic JavaScript", "Responsive design knowledge"],
         postedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
         applicationDeadline: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
-        logo: "/placeholder.svg?height=50&width=50",
+        logo: "/dev.png",
         url: "#",
       },
       {
@@ -161,7 +161,7 @@ export default function CareerPage() {
         requirements: ["Typing skills", "Attention to detail", "Basic Excel knowledge"],
         postedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         applicationDeadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-        logo: "/placeholder.svg?height=50&width=50",
+        logo: "/data.jpeg",
         url: "#",
       },
       {
@@ -175,7 +175,7 @@ export default function CareerPage() {
         requirements: ["Basic computer skills", "Good communication", "Organization skills"],
         postedDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
         applicationDeadline: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000),
-        logo: "/placeholder.svg?height=50&width=50",
+        logo: "/ec.jpeg",
         url: "#",
       },
       {
@@ -189,7 +189,7 @@ export default function CareerPage() {
         requirements: ["Creative writing", "Basic design skills", "Social media familiarity"],
         postedDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         applicationDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        logo: "/placeholder.svg?height=50&width=50",
+        logo: "/cr.png",
         url: "#",
       },
     ]
