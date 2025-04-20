@@ -1,82 +1,64 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { NextResponse } from "next/server";
 
-// Initialize the Google Generative AI with your API key
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
+export async function POST(req: Request) {
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-export async function POST(request: NextRequest) {
   try {
-    // Parse the request body
-    const body = await request.json()
-    const { message } = body
-
-    if (!message) {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 })
+    // Validate request
+    const { message } = await req.json();
+    if (!message?.trim()) {
+      return NextResponse.json(
+        { error: "Message cannot be empty" },
+        { status: 400 }
+      );
     }
 
-    // Check if API key is configured
-    if (!process.env.GEMINI_API_KEY) {
-      console.error("GEMINI_API_KEY is not configured")
-      return NextResponse.json({ error: "API key not configured" }, { status: 500 })
-    }
-
-    // Configure the model
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" })
-
-    // System prompt to guide the AI's behavior
-    const systemPrompt = `
-      You are an AI Mentor specializing in providing advice on health, legal matters, career development, 
-      and emotional support. Your responses should be:
-      - Helpful, accurate, and empathetic
-      - Concise but thorough (aim for 2-4 paragraphs)
-      - Tailored to the user's specific question
-      - Include actionable advice when appropriate
-      - Formatted with proper paragraphs for readability
-      
-      Remember that you're not a replacement for professional advice, especially for serious health, 
-      legal, or mental health concerns. Suggest seeking professional help when appropriate.
-    `
-
-    // Create a chat session
-    const chat = model.startChat({
-      history: [
-        {
-          role: "user",
-          parts: [{ text: "Please introduce yourself as my AI Mentor" }],
-        },
-        {
-          role: "model",
-          parts: [
-            {
-              text: "Hello! I'm your AI Mentor, ready to provide guidance on health, career, legal matters, and emotional support. How can I assist you today?",
-            },
-          ],
-        },
-      ],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 1000,
+    // Call Gemini 2.0 Flash API directly
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    })
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: message }]
+        }],
+        generationConfig: {
+          temperature: 0.9,
+          topP: 1,
+          topK: 32,
+          maxOutputTokens: 2048,
+        }
+      }),
+    });
 
-    // Send the message to the model
-    const result = await chat.sendMessage(systemPrompt + "\n\nUser  query: " + message)
-    const response = result.response.text()
+    const data = await response.json();
 
-    // Return the response
-    return NextResponse.json({ response })
-  } catch (error) {
-    console.error("Error processing request:", error)
+    if (!response.ok) {
+      console.error('Gemini API Error:', data);
+      throw new Error(data.error?.message || "Failed to generate response");
+    }
 
-    // Return a more detailed error response
+    // Extract the response text
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                 "No response generated";
+
+    return NextResponse.json({
+      success: true,
+      response: text,
+      model: "gemini-2.0-flash"
+    });
+
+  } catch (error: any) {
+    console.error('API Error:', error);
     return NextResponse.json(
       {
-        error: "Failed to process request",
-        details: error instanceof Error ? error.message : String(error),
+        success: false,
+        error: error.message || "Failed to process request",
+        solution: "Please check your API key and try again"
       },
-      { status: 500 },
-    )
+      { status: 500 }
+    );
   }
 }
