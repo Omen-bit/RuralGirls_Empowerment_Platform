@@ -41,5 +41,4 @@
 ---
 
 ## 🤝 Contributing
-
 We welcome contributions! Please open issues or submit pull requests for new features, bug fixes, or improvements. 
