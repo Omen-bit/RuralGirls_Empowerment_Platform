@@ -34,7 +34,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const { user, signOut, db, isInitialized } = useFirebase()
+  const { user, signOut, db, isInitialized, loading: authLoading } = useFirebase()
   const [userData, setUserData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
@@ -45,33 +45,49 @@ export default function DashboardLayout({
         return
       }
 
+      // Wait for auth state to be determined
+      if (authLoading) {
+        return
+      }
+
       if (!user) {
         router.push("/login")
         return
       }
 
       try {
-        // Get user data from Firestore
-        const userDoc = await getDoc(doc(db, "users", user.uid))
+        // Get user data from Firestore with timeout
+        const userDocPromise = getDoc(doc(db, "users", user.uid))
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Firestore timeout")), 5000)
+        )
+
+        const userDoc = await Promise.race([userDocPromise, timeoutPromise]) as any
 
         if (userDoc.exists()) {
           const data = userDoc.data()
           setUserData(data)
 
-          // Check if profile is complete
+          // Check if profile is complete (optional, don't block)
           if (!data.profileComplete) {
-            router.push("/profile-setup")
+            // Don't redirect immediately, let user access dashboard
+            console.log("Profile incomplete, but allowing access")
           }
+        } else {
+          // Create basic user data if doesn't exist
+          setUserData({ name: user.email, profileComplete: false })
         }
       } catch (error) {
         console.error("Error fetching user data:", error)
+        // Set basic user data even if Firestore fails
+        setUserData({ name: user.email, profileComplete: false })
       } finally {
         setLoading(false)
       }
     }
 
     checkAuth()
-  }, [user, router, db, isInitialized])
+  }, [user, router, db, isInitialized, authLoading])
 
   const handleSignOut = async () => {
     try {
@@ -98,6 +114,17 @@ export default function DashboardLayout({
               <Link href="/">Return to Home</Link>
             </Button>
           </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-pink-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     )
@@ -232,15 +259,14 @@ export default function DashboardLayout({
           </SidebarFooter>
         </Sidebar>
 
-        <div className="flex-1">
-          <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+        <div className="flex-1 flex flex-col min-h-screen">
+          <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center">
-              <SidebarTrigger className="mr-4 md:hidden" />
-              <h1 className="text-xl font-bold">Dashboard</h1>
+              <SidebarTrigger className="mr-4 lg:hidden" />
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Bell size={20} />
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Bell size={16} />
               </Button>
               <Avatar className="h-8 w-8">
                 <AvatarImage src={userData?.profilePhotoURL || ""} />
@@ -251,7 +277,7 @@ export default function DashboardLayout({
             </div>
           </header>
 
-          <main className="p-6">{children}</main>
+          <main className="flex-1 overflow-auto">{children}</main>
         </div>
       </div>
     </SidebarProvider>

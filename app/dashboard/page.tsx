@@ -192,7 +192,7 @@ export default function Home() {
               className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="\ChatGPT Image Apr 19, 2025, 12_06_44 AM.png"
+                src="\home.png"
                 alt="Rural girls using digital devices"
                 fill
                 className="object-cover"

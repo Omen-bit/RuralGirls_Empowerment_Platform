@@ -615,52 +615,20 @@ export default function SkillMarketplace() {
   ]
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="w-full py-12 md:py-24 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-background">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-            <motion.div 
-              className="space-y-4"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Badge variant="outline" className="px-3 py-1">
-                Skill Marketplace
-              </Badge>
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Build Skills for a Better Future
-              </h1>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                Access vocational training, earn certifications, and explore entrepreneurship opportunities designed for
-                rural communities.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild size="lg">
-                  <Link href="#courses">Browse Courses</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <Link href="#entrepreneurship">Explore Entrepreneurship</Link>
-                </Button>
-              </div>
-            </motion.div>
-            <motion.div 
-              className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Image
-                src="/skill.png"
-                alt="Women learning vocational skills"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
+    <div className="h-full bg-gradient-to-br from-green-50 via-white to-blue-50/30 p-4">
+      <div className="h-full max-w-7xl mx-auto">
+        {/* Compact Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <GraduationCap className="h-6 w-6 text-primary" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              Learn & Grow
+            </h1>
           </div>
+          <p className="text-sm text-gray-600">
+            Access vocational training, earn certifications, and explore opportunities designed for rural communities.
+          </p>
         </div>
-      </section>
 
       {/* Main Content */}
       <section className="w-full py-12 md:py-24">
@@ -1548,6 +1516,7 @@ export default function SkillMarketplace() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   )
 }

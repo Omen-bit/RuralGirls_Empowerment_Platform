@@ -651,9 +651,23 @@ export default function CommunitySupportPage() {
   ]
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="w-full py-12 md:py-24 bg-gradient-to-b from-violet-50 to-white dark:from-gray-900 dark:to-background overflow-hidden relative">
+    <div className="h-full bg-gradient-to-br from-violet-50 via-white to-pink-50/30 p-4">
+      <div className="h-full max-w-7xl mx-auto">
+        {/* Compact Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <Users className="h-6 w-6 text-primary" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">
+              Community
+            </h1>
+          </div>
+          <p className="text-sm text-gray-600">
+            Connect with mentors, join discussions, and participate in community events.
+          </p>
+        </div>
+
+      {/* Main Content */}
+      <section className="w-full">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -2721,6 +2735,7 @@ export default function CommunitySupportPage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   )
 }
