@@ -134,24 +134,60 @@ export default function AIMentorPage() {
   }
 
   return (
-    <div className="h-full bg-gradient-to-br from-slate-50 via-white to-purple-50/30 p-4">
-      <div className="h-full max-w-7xl mx-auto">
-        {/* Compact Header */}
-        <div className="text-center mb-4">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Image
-              src="/pri.png"
-              alt="Prakriti AI"
-              width={32}
-              height={32}
-              className="rounded-full border-2 border-white shadow-md"
-            />
-            <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              AI Mentor
-            </h1>
-          </div>
-          <p className="text-xs text-gray-600">Your intelligent companion for guidance and support</p>
-        </div>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/pri.png"
+          alt="Background"
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-600/20 backdrop-blur-sm" />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4"
+      >
+        <motion.h1
+          className="text-4xl font-bold mb-6 text-primary"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{
+            type: "spring",
+            stiffness: 200,
+            damping: 10,
+            delay: 0.2,
+          }}
+        >
+          <span className="inline-block">
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="inline-flex items-center"
+            >
+              Prakriti AI Mentor
+              <motion.div
+                animate={{
+                  rotate: 360,
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  rotate: { repeat: Number.POSITIVE_INFINITY, duration: 10, ease: "linear" },
+                  scale: { repeat: Number.POSITIVE_INFINITY, duration: 2, ease: "easeInOut" },
+                }}
+                className="ml-2"
+              >
+                <Sparkles className="h-6 w-6 text-yellow-400" />
+              </motion.div>
+            </motion.span>
+          </span>
+        </motion.h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[calc(100vh-200px)]">
           {/* Improved Sidebar */}
@@ -182,6 +218,41 @@ export default function AIMentorPage() {
                   ))}
                 </div>
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearMessages}
+                title="Clear Chat"
+                className="hover:bg-red-100 hover:text-red-600 transition-colors"
+              >
+                <Trash2 className="h-4 w-4 text-red-400" />
+              </Button>
+            </div>
+          </CardHeader>
+
+          <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+            {messages.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-center py-6"
+              >
+                <motion.div
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                >
+                  <Image
+                    src="/pri.png"
+                    alt="AI Assistant"
+                    width={120}
+                    height={120}
+                    className="mx-auto mb-4 rounded-full shadow-lg border-4 border-primary/20"
+                  />
+                </motion.div>
+
+                <h3 className="text-xl font-semibold mb-5 text-gray-800">How can I help you today?</h3>
 
               {/* Popular Topics */}
               <div>
