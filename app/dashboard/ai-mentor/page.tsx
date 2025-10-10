@@ -189,34 +189,33 @@ export default function AIMentorPage() {
           </span>
         </motion.h1>
 
-        <Card className="w-full max-w-5xl h-[80vh] flex flex-col border-2 border-primary/30 shadow-xl bg-white/90 backdrop-blur-md rounded-2xl overflow-hidden">
-          <CardHeader className="border-b bg-gradient-to-r from-primary/20 to-purple-300/40 py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <motion.div
-                  animate={{
-                    rotateZ: [0, 10, -10, 0],
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    repeat: Number.POSITIVE_INFINITY,
-                    duration: 4,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <Image
-                    src="/pri.png"
-                    alt="Prakriti AI"
-                    width={48}
-                    height={48}
-                    className="rounded-full border-2 border-white shadow-md"
-                  />
-                </motion.div>
-                <div>
-                  <CardTitle className="text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                    Prakriti AI Mentor
-                  </CardTitle>
-                  <p className="text-xs text-gray-600">Your personal guide to knowledge and wisdom</p>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[calc(100vh-200px)]">
+          {/* Improved Sidebar */}
+          <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200/50 p-4 overflow-y-auto">
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  Quick Start
+                </h2>
+                <div className="grid grid-cols-1 gap-2">
+                  {quickActions.slice(0, 4).map((action, index) => (
+                    <div key={action.label}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start p-3 h-auto border border-gray-100 hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 group rounded-lg"
+                        onClick={() => handleSendMessage(action.prompt)}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="p-1.5 rounded-md bg-gradient-to-br from-primary/10 to-purple-100 group-hover:from-primary/20 group-hover:to-purple-200 transition-colors">
+                            {action.icon}
+                          </div>
+                          <span className="font-medium text-sm text-gray-700">{action.label}</span>
+                        </div>
+                      </Button>
+                    </div>
+                  ))}
                 </div>
               </div>
               <Button
@@ -255,218 +254,248 @@ export default function AIMentorPage() {
 
                 <h3 className="text-xl font-semibold mb-5 text-gray-800">How can I help you today?</h3>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-                  {quickActions.map((action, index) => (
-                    <motion.div
-                      key={action.label}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 + 0.5 }}
-                      whileHover={{ scale: 1.05, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
-                      whileTap={{ scale: 0.97 }}
-                    >
+              {/* Popular Topics */}
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  Popular Topics
+                </h3>
+                <div className="space-y-1">
+                  {suggestedTopics.slice(0, 3).map((topic, index) => (
+                    <div key={topic}>
                       <Button
-                        variant="outline"
-                        className="py-4 flex flex-col items-center gap-2 w-full text-sm border-primary/20 hover:border-primary/50 hover:bg-primary/5"
-                        onClick={() => handleSendMessage(action.prompt)}
-                      >
-                        <motion.div
-                          whileHover={{
-                            rotate: [0, -10, 10, 0],
-                            boxShadow: "0 0 8px rgba(0, 0, 0, 0.2)",
-                          }}
-                          transition={{ duration: 0.5 }}
-                          className="bg-gradient-to-br from-primary/20 to-purple-400/20 p-3 rounded-lg shadow-md border border-primary/10 flex items-center justify-center"
-                        >
-                          <div className="text-primary w-5 h-5 flex items-center justify-center">{action.icon}</div>
-                        </motion.div>
-                        <span>{action.label}</span>
-                      </Button>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>
-                  <h4 className="text-sm font-medium mb-3 text-gray-600 flex items-center justify-center gap-2">
-                    <BookOpen className="h-4 w-4" />
-                    Popular Topics
-                  </h4>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {suggestedTopics.map((topic, index) => (
-                      <motion.div
-                        key={topic}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.3 + index * 0.1 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-xs bg-white/80 border shadow-sm hover:bg-primary/10"
-                          onClick={() => handleSendMessage(topic)}
-                        >
-                          {topic}
-                        </Button>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              </motion.div>
-            ) : (
-              <AnimatePresence>
-                {messages.map((message) => (
-                  <motion.div
-                    key={message.id}
-                    initial={{ opacity: 0, x: message.sender === "user" ? 50 : -50, y: 10 }}
-                    animate={{ opacity: 1, x: 0, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.4, type: "spring", stiffness: 100 }}
-                    className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className={`max-w-[75%] rounded-xl px-4 py-3 text-sm shadow-md ${
-                        message.sender === "user"
-                          ? "bg-gradient-to-r from-primary to-primary/90 text-white"
-                          : "bg-white border border-gray-200"
-                      }`}
-                    >
-                      {message.sender === "ai" && (
-                        <div className="flex items-center gap-2 mb-2 pb-1 border-b border-gray-100">
-                          <Image src="/pri.png" alt="Prakriti AI" width={20} height={20} className="rounded-full" />
-                          <span className="text-xs font-medium text-primary">Prakriti AI</span>
-                        </div>
-                      )}
-                      <p className="whitespace-pre-wrap">
-                        {message.sender === "ai" ? (
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: message.content.replace(/\n/g, "<br/>"),
-                            }}
-                          />
-                        ) : (
-                          message.content
-                        )}
-                      </p>
-                      <p className="text-[10px] mt-1 text-right opacity-60">
-                        {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                      </p>
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            )}
-            {loading && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex justify-start"
-              >
-                <div className="bg-white rounded-xl p-4 max-w-[75%] border shadow-md">
-                  <div className="flex items-center gap-2 text-sm text-gray-700">
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
-                    >
-                      <Loader2 className="h-4 w-4" />
-                    </motion.div>
-                    <motion.span
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5, ease: "easeInOut" }}
-                    >
-                      Prakriti is thinking...
-                    </motion.span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-            <div ref={messagesEndRef} />
-          </CardContent>
-
-          <CardFooter className="border-t p-4 gap-2 bg-gradient-to-r from-gray-100 to-gray-50">
-            <div className="relative flex-1">
-              <Input
-                placeholder="Ask Prakriti about health, legal, business, or anything else..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onFocus={() => setShowSuggestions(true)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleSendMessage()
-                  } else if (e.key === "Escape") {
-                    setShowSuggestions(false)
-                  }
-                }}
-                className="flex-1 border-primary/30 focus:border-primary focus:ring-primary pr-10 shadow-sm"
-              />
-              {input.length === 0 && showSuggestions && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border p-2 z-10"
-                >
-                  <div className="text-xs font-medium text-gray-500 mb-1 px-2">Quick suggestions:</div>
-                  <div className="grid grid-cols-1 gap-1">
-                    {suggestedTopics.slice(0, 3).map((topic) => (
-                      <Button
-                        key={topic}
                         variant="ghost"
                         size="sm"
-                        className="justify-start text-xs h-auto py-1.5 hover:bg-primary/10"
+                        className="w-full justify-start text-xs text-gray-600 hover:text-primary hover:bg-primary/5 p-2 h-auto rounded-md"
                         onClick={() => handleSendMessage(topic)}
                       >
-                        {topic}
+                        <div className="truncate text-left">{topic}</div>
                       </Button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-              <Button
-                type="button"
-                size="sm"
-                variant="ghost"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                onClick={() => setShowSuggestions(!showSuggestions)}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 10 }}
-                  className="bg-gradient-to-br from-blue-100 to-purple-100 p-1.5 rounded-md shadow-sm border border-primary/10 flex items-center justify-center"
-                >
-                  <Rocket className="h-4 w-4 text-primary" />
-                </motion.div>
-              </Button>
-            </div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                onClick={() => handleSendMessage()}
-                disabled={!input.trim() || loading}
-                className="bg-primary hover:bg-primary/90 shadow-md"
-              >
-                {loading ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <motion.div whileHover={{ x: 3 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                    <Send />
-                  </motion.div>
-                )}
-              </Button>
-            </motion.div>
-          </CardFooter>
-        </Card>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="mt-4 text-xs text-center text-gray-500"
-        >
-          Powered by advanced AI technology • Your personal knowledge companion
-        </motion.div>
-      </motion.div>
+              {/* Stats or Info */}
+              <div className="pt-4 border-t border-gray-100">
+                <div className="text-xs text-gray-500 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>AI Online</span>
+                  </div>
+                  <div>Ready to help 24/7</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Chat Interface */}
+          <Card className="lg:col-span-3 flex flex-col border border-gray-200/50 shadow-sm bg-white rounded-xl overflow-hidden">
+            <CardHeader className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-purple-50/50 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-20"></div>
+                    <Image
+                      src="/pri.png"
+                      alt="Prakriti AI"
+                      width={40}
+                      height={40}
+                      className="relative rounded-full border-2 border-white shadow-sm"
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg font-semibold text-gray-800">
+                      Chat with Prakriti
+                    </CardTitle>
+                    <p className="text-xs text-gray-500">Online • Ready to help</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearMessages}
+                    title="Clear Chat"
+                    className="hover:bg-red-50 hover:text-red-600 transition-colors rounded-lg"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="flex-1 overflow-y-auto p-4 bg-white">
+              {messages.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-center py-8">
+                  <div className="mb-6">
+                    <Image
+                      src="/pri.png"
+                      alt="AI Assistant"
+                      width={80}
+                      height={80}
+                      className="rounded-full shadow-lg border-3 border-white"
+                    />
+                  </div>
+
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                      Hello! I'm Prakriti AI
+                    </h3>
+                    <p className="text-gray-600 text-sm max-w-sm">
+                      Ask me anything about health, legal matters, business, education, or any topic you need guidance on.
+                    </p>
+                  </div>
+
+                  <div className="text-sm text-gray-500">
+                    Type a message below or use the quick actions on the left to get started.
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                    >
+                      <div className={`flex items-start gap-3 max-w-[80%] ${message.sender === "user" ? "flex-row-reverse" : ""}`}>
+                        {message.sender === "ai" && (
+                          <div className="flex-shrink-0 mt-1">
+                            <div className="relative">
+                              <Image 
+                                src="/pri.png" 
+                                alt="Prakriti AI" 
+                                width={32} 
+                                height={32} 
+                                className="rounded-full border-2 border-white shadow-sm" 
+                              />
+                              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full border border-white"></div>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div
+                          className={`rounded-2xl px-4 py-3 shadow-sm ${
+                            message.sender === "user"
+                              ? "bg-gradient-to-r from-primary to-purple-600 text-white rounded-br-md"
+                              : "bg-white border border-gray-200 rounded-bl-md"
+                          }`}
+                        >
+                          {message.sender === "ai" && (
+                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
+                              <span className="text-xs font-semibold text-primary">Prakriti AI</span>
+                              <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                            </div>
+                          )}
+                          
+                          <div className={`text-sm leading-relaxed ${message.sender === "user" ? "text-white" : "text-gray-800"}`}>
+                            {message.sender === "ai" ? (
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: message.content.replace(/\n/g, "<br/>"),
+                                }}
+                              />
+                            ) : (
+                              message.content
+                            )}
+                          </div>
+                          
+                          <div className={`text-xs mt-2 ${
+                            message.sender === "user" ? "text-white/70" : "text-gray-500"
+                          }`}>
+                            {message.timestamp.toLocaleTimeString([], { 
+                              hour: "2-digit", 
+                              minute: "2-digit" 
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {loading && (
+                <div className="flex justify-start mt-4">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="relative">
+                        <Image 
+                          src="/pri.png" 
+                          alt="Prakriti AI" 
+                          width={32} 
+                          height={32} 
+                          className="rounded-full border-2 border-white shadow-sm" 
+                        />
+                        <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-yellow-500 rounded-full border border-white animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-2xl rounded-bl-md px-4 py-3 border border-gray-200 shadow-sm">
+                      <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
+                        <span className="text-xs font-semibold text-primary">Prakriti AI</span>
+                        <div className="w-1 h-1 bg-yellow-500 rounded-full animate-pulse"></div>
+                      </div>
+                      <div className="flex items-center gap-3 text-sm text-gray-600">
+                        <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                        <span className="animate-pulse">Thinking...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </CardContent>
+
+            <CardFooter className="border-t border-gray-100 p-6 bg-white">
+              <div className="flex items-end gap-4 w-full">
+                <div className="relative flex-1">
+                  <Input
+                    placeholder="Type your message here..."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault()
+                        handleSendMessage()
+                      }
+                    }}
+                    className="min-h-[48px] px-4 py-3 border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl resize-none shadow-sm"
+                    disabled={loading}
+                  />
+                  {input.length === 0 && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <Rocket className="h-4 w-4" />
+                    </div>
+                  )}
+                </div>
+                
+                <Button
+                  onClick={() => handleSendMessage()}
+                  disabled={!input.trim() || loading}
+                  size="lg"
+                  className="h-12 px-6 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-md rounded-xl transition-all duration-200"
+                >
+                  {loading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Send className="h-5 w-5" />
+                      <span className="hidden sm:inline">Send</span>
+                    </div>
+                  )}
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-6">
+          <p className="text-xs text-gray-500">
+            Powered by advanced AI • Your trusted companion for guidance and support
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

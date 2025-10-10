@@ -13,6 +13,8 @@ import {
   GoogleAuthProvider,
   signOut as firebaseSignOut,
   type RecaptchaVerifier,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 import { getStorage } from "firebase/storage"
@@ -30,12 +32,12 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase only if credentials are available
-let app
-let auth
-let db
-let storage
-let functions
-let googleProvider
+let app: any
+let auth: any
+let db: any
+let storage: any
+let functions: any
+let googleProvider: any
 
 const isConfigValid =
   typeof window !== "undefined" && firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined"
@@ -48,6 +50,13 @@ if (isConfigValid) {
     storage = getStorage(app)
     functions = getFunctions(app)
     googleProvider = new GoogleAuthProvider()
+    
+    // Set auth persistence to local
+    if (auth) {
+      setPersistence(auth, browserLocalPersistence).catch((error) => {
+        console.error("Error setting auth persistence:", error)
+      })
+    }
   } catch (error) {
     console.error("Firebase initialization error:", error)
   }
@@ -74,7 +83,7 @@ const FirebaseContext = createContext<FirebaseContextType | null>(null)
 export const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [isInitialized, setIsInitialized] = useState(isConfigValid)
+  const [isInitialized, setIsInitialized] = useState(Boolean(isConfigValid))
 
   useEffect(() => {
     if (!isInitialized) {
@@ -82,13 +91,25 @@ export const FirebaseProvider = ({ children }: { children: React.ReactNode }) =>
       return
     }
 
+    // Set a timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      if (loading) {
+        console.warn("Auth state taking too long, setting loading to false")
+        setLoading(false)
+      }
+    }, 3000) // 3 second timeout
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      clearTimeout(loadingTimeout)
       setUser(user)
       setLoading(false)
     })
 
-    return () => unsubscribe()
-  }, [isInitialized])
+    return () => {
+      unsubscribe()
+      clearTimeout(loadingTimeout)
+    }
+  }, [isInitialized, loading])
 
   const signIn = async (email: string, password: string) => {
     if (!isInitialized) throw new Error("Firebase is not initialized. Please check your environment variables.")

@@ -58,7 +58,8 @@ export default function LoginPage() {
 
     try {
       await signIn(email, password)
-      router.push("/dashboard")
+      // Use replace instead of push for better performance
+      router.replace("/dashboard")
     } catch (error: any) {
       toast({
         title: "Login Failed",
@@ -84,7 +85,7 @@ export default function LoginPage() {
 
     try {
       await signInWithGoogle()
-      router.push("/dashboard")
+      router.replace("/dashboard")
     } catch (error: any) {
       toast({
         title: "Google Login Failed",
